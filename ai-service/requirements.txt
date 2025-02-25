@@ -9,3 +9,4 @@ pandas
 numpy
 tika
 python-multipart
+spacy[transformers]
