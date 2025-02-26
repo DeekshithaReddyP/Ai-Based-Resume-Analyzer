@@ -2,7 +2,7 @@ import spacy
 import re
 
 # Load spaCy model (make sure you have downloaded en_core_web_lg)
-nlp = spacy.load("en_core_web_lg")
+nlp = spacy.load("en_core_web_sm")
 
 # Define a common set of skills (all in lowercase for matching)
 COMMON_SKILLS = {
