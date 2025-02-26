@@ -7,6 +7,10 @@ from models.job_matcher import match_resume_with_job
 
 app = FastAPI()
 
+@app.get("/")
+def home():
+    return {"message": "Resume Analyzer AI is running!"}
+
 @app.post("/analyze/")
 async def analyze_resume(
     file: UploadFile = File(...), 
