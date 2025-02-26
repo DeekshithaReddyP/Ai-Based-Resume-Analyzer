@@ -1,28 +1,43 @@
-import tika
-from tika import parser
 import os
-import json
-
-# Force Tika to use its online server
-os.environ["TIKA_SERVER_ENDPOINT"] = "https://tika.apache.org/tika"
-
-# We don't call tika.initVM() since we don't want a local Java VM.
+import mimetypes
 
 def extract_text_from_file(file_path):
-    """Extract text from a PDF or DOCX file using Apache Tika's online server via a POST request."""
-    try:
-        # Read the file as bytes
-        with open(file_path, "rb") as f:
-            file_data = f.read()
-        # Use from_buffer to send file data via POST (which the remote server accepts)
-        parsed = parser.from_buffer(file_data, serverEndpoint=os.environ["TIKA_SERVER_ENDPOINT"])
-        content = parsed.get("content", "")
-        return content.strip() if content else ""
-    except json.decoder.JSONDecodeError as e:
-        print("JSONDecodeError during Tika parsing:", e)
-        return ""
-    except Exception as e:
-        print("Error during Tika parsing:", e)
+    """
+    Extract text from a PDF or DOCX file using alternative libraries.
+    For PDFs: PyPDF2; For DOCX: python-docx.
+    """
+    mime, _ = mimetypes.guess_type(file_path)
+    
+    if mime == 'application/pdf':
+        try:
+            import PyPDF2
+            with open(file_path, "rb") as f:
+                reader = PyPDF2.PdfReader(f)
+                text = ""
+                for page in reader.pages:
+                    page_text = page.extract_text()
+                    if page_text:
+                        text += page_text + "\n"
+            return text.strip()
+        except Exception as e:
+            print("Error extracting PDF:", e)
+            return ""
+    
+    elif mime in [
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+        'application/msword'
+    ]:
+        try:
+            import docx
+            doc = docx.Document(file_path)
+            text = "\n".join([para.text for para in doc.paragraphs])
+            return text.strip()
+        except Exception as e:
+            print("Error extracting DOCX:", e)
+            return ""
+    
+    else:
+        print("Unsupported file type:", mime)
         return ""
 
 # Test function (Runs locally)
