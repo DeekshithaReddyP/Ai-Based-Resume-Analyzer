@@ -4,8 +4,18 @@ import os
 from models.resume_extractor import extract_text_from_file
 from models.skills_analyzer import extract_entities, extract_skills
 from models.job_matcher import match_resume_with_job
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
+
+# Configure CORS to allow requests from your frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Replace with your frontend URL as needed
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.get("/")
 def home():
@@ -55,5 +65,5 @@ async def analyze_resume(
     return response
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 8000))  
+    port = int(os.environ.get("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
