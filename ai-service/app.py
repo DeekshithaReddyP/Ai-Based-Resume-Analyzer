@@ -8,7 +8,10 @@ from models.job_matcher import match_resume_with_job
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import nltk
-nltk.data.path.append("/opt/render/project/src/nltk_data")
+# Create the directory if it doesn't exist
+os.makedirs('/opt/render/nltk_data', exist_ok=True)
+nltk.download('punkt', download_dir='/opt/render/nltk_data')
+nltk.download('stopwords', download_dir='/opt/render/nltk_data')
 
 app = FastAPI(
     title="Advanced Resume Analyzer AI",
