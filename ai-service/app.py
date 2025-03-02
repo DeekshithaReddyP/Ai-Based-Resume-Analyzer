@@ -9,7 +9,6 @@ from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import nltk
 nltk.data.path.append("/opt/render/project/src/nltk_data")
-nltk.download("punkt", download_dir="/opt/render/project/src/nltk_data")
 
 app = FastAPI(
     title="Advanced Resume Analyzer AI",
