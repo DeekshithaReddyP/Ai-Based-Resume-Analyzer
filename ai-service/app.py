@@ -8,7 +8,8 @@ from models.job_matcher import match_resume_with_job
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
 import nltk
-nltk.download('punkt')
+nltk.data.path.append("/opt/render/project/src/nltk_data")
+nltk.download("punkt", download_dir="/opt/render/project/src/nltk_data")
 
 app = FastAPI(
     title="Advanced Resume Analyzer AI",
@@ -102,7 +103,7 @@ async def analyze_resume(
     }
 
     # If a job description is provided, compute matched/missing skills and job-specific score
-    if job_description.strip():
+    if job_description.strip().lower():
         match_results = match_resume_with_job(resume_text, job_description)
         response["matched_skills"] = match_results.get("Matched Skills", [])
         response["missing_skills"] = match_results.get("Missing Skills", [])
@@ -113,8 +114,9 @@ async def analyze_resume(
             "Summary": "Job description not provided. For personalized analysis, please provide a job description."
         }
 
-    # Clean up the temporary file
-    os.remove(file_path)
+    if os.path.exists(file_path):
+        os.remove(file_path)
+
 
     return response
 
