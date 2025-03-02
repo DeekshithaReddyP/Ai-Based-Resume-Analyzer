@@ -1,4 +1,5 @@
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
 from models.resume_extractor import extract_text_from_file
@@ -13,15 +14,14 @@ app = FastAPI(
     version="2.0.0"
 )
 
-# Configure CORS to allow requests from your frontend
+# Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Replace with your frontend URL as needed
+    allow_origins=["*"],  # Allows all origins
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
 )
-
 
 class ResumeUploadResponse(BaseModel):
     name: List[str]
