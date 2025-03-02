@@ -7,6 +7,8 @@ from models.skills_analyzer import extract_entities, extract_skills, extract_exp
 from models.job_matcher import match_resume_with_job
 from pydantic import BaseModel
 from typing import List, Dict, Any, Optional
+import nltk
+nltk.download('punkt')
 
 app = FastAPI(
     title="Advanced Resume Analyzer AI",
