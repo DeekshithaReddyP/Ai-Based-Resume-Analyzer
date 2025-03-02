@@ -1,0 +1,15 @@
+.score-circle {
+    transform: rotate(-90deg);
+  }
+  
+  .score-circle-progress {
+    transition: stroke-dashoffset 0.5s ease;
+  }
+  
+  .score-circle-text {
+    fill: var(--text-primary);
+    font-size: 1.5rem;
+    font-weight: bold;
+    pointer-events: none;
+  }
+  
