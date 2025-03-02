@@ -9,8 +9,5 @@ pandas
 numpy
 tika
 python-multipart
-spacy
 PyPDF2
 python-docx
-re
-collections
