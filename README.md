@@ -4,7 +4,7 @@
 
 **AI-Based Resume Analyzer** is a full-stack application that analyzes resumes, extracts key information, computes a resume score, and provides job matching insights. The backend is built with FastAPI and NLTK, while the frontend is built with React (using Vite).
 
-**Live Demo (Backend):**  
+**Live Demo :**  
 [https://ai-based-resume-analyzer.vercel.app/](https://ai-based-resume-analyzer.vercel.app/)
 
 ## Table of Contents
