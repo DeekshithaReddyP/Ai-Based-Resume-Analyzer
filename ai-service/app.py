@@ -1,9 +1,27 @@
+import os
 import nltk
-nltk.data.path.insert(0, "/opt/render/project/src/nltk_data")
+
+# Check if running on Render (or any environment where NLTK data is pre-downloaded)
+if os.path.exists('/opt/render/project/src/nltk_data'):
+    nltk.data.path.insert(0, "/opt/render/project/src/nltk_data")
+else:
+    # For local development, set a local directory for nltk_data
+    local_nltk_data = os.path.expanduser('~/nltk_data')
+    nltk.data.path.insert(0, local_nltk_data)
+    
+    # Ensure required NLTK tokenizers are downloaded locally
+    try:
+        nltk.data.find('tokenizers/punkt')
+    except LookupError:
+        nltk.download('punkt', download_dir=local_nltk_data)
+    
+    try:
+        nltk.data.find('tokenizers/punkt_tab')
+    except LookupError:
+        nltk.download('punkt_tab', download_dir=local_nltk_data)
 from fastapi import FastAPI, UploadFile, File, Form, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-import os
 from models.resume_extractor import extract_text_from_file
 from models.skills_analyzer import extract_entities, extract_skills, extract_experience, calculate_resume_score
 from models.job_matcher import match_resume_with_job
